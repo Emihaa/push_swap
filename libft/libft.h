@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 14:22:00 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/01/27 19:54:54 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/06 21:54:31 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ int		ft_isalpha(int c);
 int		ft_isalnum(int c);
 void	*ft_calloc(size_t nmemb, size_t size);
 void	ft_bzero(void *s, size_t n);
-int		ft_atoi(const char *nptr);
+int	ft_atoi(const char *nptr, int *flag);
 
 //task 2
 char	*ft_strmapi(char const *s, char (*f)(unsigned int, char));

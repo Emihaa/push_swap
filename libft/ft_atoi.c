@@ -6,17 +6,36 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/11/07 15:24:15 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/05 22:31:27 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/06 22:03:21 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "libft.h"
 
-int	ft_atoi(const char *nptr)
+static int	check_overflow(long nbr, int neg, int *flag)
 {
-	int	i;
-	int	neg;
 	int	value;
+
+	value = 0;
+	if (neg == 1)
+	{
+		*flag = 1;
+		value = 2147483647;
+	}
+	else
+	{
+		if (nbr != 2147483648)
+			*flag = 1;
+		value = -2147483648;
+	}
+	return (value);
+}
+
+int	ft_atoi(const char *nptr, int *flag)
+{
+	int		i;
+	int		neg;
+	unsigned int	value;
 
 	i = 0;
 	neg = 1;
@@ -33,8 +52,9 @@ int	ft_atoi(const char *nptr)
 	while (nptr[i] >= '0' && nptr[i] <= '9')
 	{
 		value = value * 10 + nptr[i] - '0';
+		if (value > 2147483647)
+			return (check_overflow(value, neg, flag));
 		i++;
 	}
-	value = value * neg;
-	return (value);
+	return ((int)(value * neg));
 }
