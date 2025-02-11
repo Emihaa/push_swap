@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 23:44:43 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/06 22:20:42 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/11 20:05:26 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,9 +19,9 @@ static void check_doubles(t_stack *stack)
 
     i = 0;
     j = 0;
-    while (i < stack->size)
+    while (i < stack->a_size)
     {
-        while (++j <= stack->size)
+        while (++j <= stack->a_size - 1)
         {
             if (stack->a[i] == stack->a[j])
             {
@@ -34,7 +34,7 @@ static void check_doubles(t_stack *stack)
     }
 }
 
-//./push_swap "1 2 4 3" 76 90 "348 05 <- this isnt fixed, I want to give error
+//./push_swap "1 2 4 3" 76 90 "348 05" <- this isnt fixed, I want to give error
 //dont know how
 static void check_wrong_imput(char *str)
 {
@@ -58,7 +58,6 @@ static void check_wrong_imput(char *str)
         else
         {
             error_input();
-            exit(EXIT_FAILURE);
         }
     }
 }
@@ -75,8 +74,8 @@ void atoi_array(int argc, char **argv, t_stack *stack)
     j = 0;
     stack->a = malloc((argc - 1) * sizeof(int));
     if (!stack)
-        exit(EXIT_FAILURE);
-    stack->size = argc - 1;
+        error_input();
+    stack->a_size = argc - 1;
     while (++j < argc)
     {
         stack->a[i] = ft_atoi(argv[j], &stack->flag);
@@ -119,7 +118,7 @@ void split_array(char **argv, t_stack *stack)
     check_wrong_imput(argv[1]);
     temp = ft_split(argv[1], ' ');
     if (!temp)
-        exit(EXIT_FAILURE);
+        error_input();
     while (temp[count])
         count++;
     stack->a = malloc(count * sizeof(int));
@@ -128,9 +127,9 @@ void split_array(char **argv, t_stack *stack)
         while (count-- > 0)
             free(temp[count]);
         free(temp);
-        exit(EXIT_FAILURE);
+        error_input();
     }
-    stack->size = count;
+    stack->a_size = count;
     array_loop(count, stack, temp);
     while (count-- > 0)
         free(temp[count]);
