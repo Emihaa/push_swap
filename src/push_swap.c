@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 16:14:52 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/11 20:24:52 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/13 20:39:05 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,27 +18,64 @@ void error_input()
     exit(EXIT_FAILURE);
 }
 
-void calculate_cost(t_stack *stack)
+int rot_cost(t_stack *stack, int pos)
 {
+    int cost;
     int min;
     int max;
-    int i;
-    int cost;
 
+    cost = 0;
     min = maxmin_b(stack, 0);
     max = maxmin_b(stack, 1);
-    ft_printf("min & max: %d %d\n", min, max);
+    ft_printf("%d\n", pos);
+    //how much does it cost to rotate the value to top of A-stack
+     //if value not already on top
+    
+    //calculate how much it cost to rotate B-stack
+       //is value already new min/max? If so then calculate how much we need
+          //rotate B-stack to get max value to top
+       //if value isnt new min/max, calculate the pos of smallest higher value on B-stack
+       //and how much it takes to rotate it to top
+    
+    //then combine the double rr posibilities /but in this we need to know
+       //which direction it is effective to rotate the stacks
+    return(cost);
+}
+
+//if the cost is 1 just do that without calculating the rest
+void calculate_cost(t_stack *stack)
+{
+    int cost;
+    int i;
+    int compare;
+    int pos;
+
     i = 0;
-    cost = 0;
-    while (i < stack->a_size)
-    {
-        if (stack->a[i] < max && stack->a[i] > min) //if the value is not more than max or smaller than min
+    compare = 0;
+    while (i < stack->a_size)//if there are like 100 values, it doesnt make sense to go through all
+    {//at what point do i stop going down the list?
+        ft_printf("\nvalue: %d\n", stack->a[i]);
+        rot_cost(stack, i);
+        cost++; //plus cost++ for push_to b stack
+        //then compare with the previous cost which one cost less and remember that
+        if (compare == 0)
         {
-            cost++; //i need to count here how many times i need to rotate the stack b
-            //to get the number in as the max value
+            compare = cost;
+            pos = i;
+        }
+        else
+        {
+            if (compare > cost)
+            {
+                compare = cost;
+                pos = i;
+            }
         }
         i++;
+        ft_printf("cost: %d\n", cost);
+        cost = 0;
     }
+    ft_printf("results: move pos %d\n", pos);
 }
 
 void do_something(t_stack *stack)
@@ -58,12 +95,7 @@ void do_something(t_stack *stack)
             push_to_b(stack);
         }
         calculate_cost(stack);
-        ft_printf("incorrect order\n"); //do stuff to get correct order
-    }
-    else
-    {
-        write(1, "\n", 1);
-        return ;
+        //do stuff to get correct order
     }
 
     

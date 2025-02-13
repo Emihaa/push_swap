@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 16:14:49 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/11 20:28:37 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/12 14:51:23 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,18 +36,21 @@ void error_input();
 void atoi_array(int argc, char **argv, t_stack *stack);
 void split_array(char **argv, t_stack *stack);
 
-//operation_utils.c
+//operation_pushswap.c
+void push_to_a(t_stack *stack);
+void push_to_b(t_stack *stack);
+void swap_both(t_stack *stack);
+void swap_b(t_stack *stack);
+void swap_a(t_stack *stack);
+
+
+//operation_rotation.c
 void reserve_rotate_both(t_stack *stack);
 void reserve_rotate_b(t_stack *stack);
 void reserve_rotate_a(t_stack *stack);
 void rotate_both(t_stack *stack);
 void rotate_b(t_stack *stack);
 void rotate_a(t_stack *stack);
-void push_to_a(t_stack *stack);
-void push_to_b(t_stack *stack);
-void swap_both(t_stack *stack);
-void swap_b(t_stack *stack);
-void swap_a(t_stack *stack);
 
 //utils.c
 void argc_three(t_stack *stack);
