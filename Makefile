@@ -4,7 +4,7 @@ LIBFT = ./libft
 NAME = push_swap
 
 LIBS = $(LIBFT)/libft.a
-SRC = src/push_swap.c src/check_arg.c src/operation_utils.c src/utils.c
+SRC = src/push_swap.c src/check_arg.c src/operation_pushswap.c src/operation_rotation.c src/utils.c src/calculate_cost.c
 
 OBJS = $(SRC:.c=.o)
 

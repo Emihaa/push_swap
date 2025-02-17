@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 16:14:49 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/12 14:51:23 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/17 21:55:36 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,5 +58,11 @@ int check_order(t_stack *stack);
 int maxmin_b(t_stack *stack, int flag);
 int maxmin_a(t_stack *stack, int flag);
 
+//calculate_cost.c
+int find_value_pos(t_stack *stack, int value);
+int find_target_value(t_stack *stack, int value);
+int count_a_stack_rot(t_stack *stack, int pos, int *inverse, int *clockwise);
+int count_b_stack_rot(t_stack *stack, int pos, int *clockwise, int *inverse);
+int rot_cost(t_stack *stack, int pos);
 
 #endif

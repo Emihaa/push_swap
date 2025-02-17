@@ -6,11 +6,13 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 16:14:52 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/13 20:39:05 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/17 23:40:09 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void compare_order(t_stack *stack);
 
 void error_input()
 {
@@ -18,28 +20,86 @@ void error_input()
     exit(EXIT_FAILURE);
 }
 
-int rot_cost(t_stack *stack, int pos)
+void take_action(t_stack *stack, int pos)
 {
-    int cost;
-    int min;
-    int max;
+    int inverse_a;
+    int clockwise_a;
+    int inverse_b;
+    int clockwise_b;
+    int rot_a;
+    int rot_b;
 
-    cost = 0;
-    min = maxmin_b(stack, 0);
-    max = maxmin_b(stack, 1);
-    ft_printf("%d\n", pos);
-    //how much does it cost to rotate the value to top of A-stack
-     //if value not already on top
-    
-    //calculate how much it cost to rotate B-stack
-       //is value already new min/max? If so then calculate how much we need
-          //rotate B-stack to get max value to top
-       //if value isnt new min/max, calculate the pos of smallest higher value on B-stack
-       //and how much it takes to rotate it to top
-    
-    //then combine the double rr posibilities /but in this we need to know
-       //which direction it is effective to rotate the stacks
-    return(cost);
+    inverse_a = 0;
+    clockwise_a = 0;
+    inverse_b = 0;
+    clockwise_b = 0;
+    //pos gives the position of value to take action on
+    //calculate how many rots we have to do on A stack
+    //then to B stack
+    //check if we can do double rr
+    rot_a = count_a_stack_rot(stack, pos, &inverse_a, &clockwise_a);  
+    rot_b = count_b_stack_rot(stack, pos, &clockwise_b, &inverse_b);
+    if ((clockwise_a && clockwise_b) || (inverse_a && inverse_b)) //common rotations
+    {
+        ft_printf("common rotations\n");
+        if (rot_a >= rot_b)
+        {
+            while (rot_a != 0)
+            {
+                if (rot_a > rot_b && inverse_a)
+                    reserve_rotate_a(stack);
+                if (rot_a <= rot_b && inverse_a && inverse_b)
+                    reserve_rotate_both(stack);
+                if (rot_a > rot_b && clockwise_a)
+                    rotate_a(stack);
+                if (rot_a <= rot_b && clockwise_a && clockwise_b)
+                    rotate_both(stack);
+                rot_a--;
+            }
+        }
+        else if (rot_b > rot_a) //esim. 3 > 2, so 2
+        {
+            while (rot_b != 0)
+            {
+                if (rot_b > rot_a && inverse_b)
+                    reserve_rotate_b(stack);
+                if (rot_b <= rot_a && inverse_a && inverse_b)
+                    reserve_rotate_both(stack);
+                if (rot_b > rot_a && clockwise_b)
+                    rotate_b(stack);
+                if (rot_b <= rot_a && clockwise_a && clockwise_b)
+                    rotate_both(stack);
+                rot_b--;
+            }
+        }
+    }
+    else //no common rotations
+    {
+        ft_printf("no common rotation rotations\n");
+        while (rot_b != 0 && clockwise_b)
+        {
+            rotate_b(stack);
+            rot_b--;
+        }
+        while (rot_b != 0 && inverse_b)
+        {
+            reserve_rotate_b(stack);
+            rot_b--;
+        }
+        while (rot_a != 0 && clockwise_a)
+        {
+            rotate_a(stack);
+            rot_a--;
+        }
+        while (rot_a != 0 && inverse_a)
+        {
+            reserve_rotate_a(stack);
+            rot_a--;
+        }
+    }
+    //then push the number
+    push_to_b(stack);
+    //then DO actions
 }
 
 //if the cost is 1 just do that without calculating the rest
@@ -54,8 +114,7 @@ void calculate_cost(t_stack *stack)
     compare = 0;
     while (i < stack->a_size)//if there are like 100 values, it doesnt make sense to go through all
     {//at what point do i stop going down the list?
-        ft_printf("\nvalue: %d\n", stack->a[i]);
-        rot_cost(stack, i);
+        cost = rot_cost(stack, i);
         cost++; //plus cost++ for push_to b stack
         //then compare with the previous cost which one cost less and remember that
         if (compare == 0)
@@ -75,7 +134,27 @@ void calculate_cost(t_stack *stack)
         ft_printf("cost: %d\n", cost);
         cost = 0;
     }
-    ft_printf("results: move pos %d\n", pos);
+    ft_printf("\n---results: move value %d ---\n", stack->a[pos]);
+    take_action(stack, pos);
+    compare_order(stack);
+}
+
+//if i at start push 2 and in stack A there is less than 3 this segment faults
+void compare_order(t_stack *stack)
+{
+    if (stack->a_size <= 3)
+    {
+        ft_printf("-- only 3 left --\n");
+        if (check_order(stack))
+            argc_three(stack);
+        //rotate A stack once to get highest value top
+        // reserve_rotate_a(stack);
+        //rotate B stack to get highest value to top
+        //then push everything from B to stack A
+        //then rotate A stack to get correct order
+    }
+    else
+        calculate_cost(stack);
 }
 
 void do_something(t_stack *stack)
@@ -95,7 +174,9 @@ void do_something(t_stack *stack)
             push_to_b(stack);
         }
         calculate_cost(stack);
-        //do stuff to get correct order
+        //compare if correct order, if not calculate more cost
+        //if A stack has only 3 left, do argc_three
+        //and then start pushing stuff from B stack to A stack
     }
 
     
@@ -114,8 +195,6 @@ void do_something(t_stack *stack)
         ft_printf("%d\n", stack->b[i]);
         i++;
    }
-   ft_printf("stack.a_size: %d\n", stack->a_size);
-   ft_printf("stack.b_size: %d\n", stack->b_size);
 }
 
 void initialize_b(t_stack *stack)
