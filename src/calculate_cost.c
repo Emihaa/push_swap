@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 21:52:04 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/17 23:36:28 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/18 16:50:44 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,17 +28,17 @@ int find_value_pos(t_stack *stack, int value)
 int find_target_value(t_stack *stack, int value)
 {
     int i;
-    int index;
+    int target;
 
     i = 0;
-    index = stack->b[i];
+    target = -2147483647;
     while (i < stack->b_size)
     {
-        if (value > stack->b[i] && index > stack->b[i])
-            index = stack->b[i];
+        if (stack->b[i] < value && stack->b[i] > target)
+            target = stack->b[i];
         i++;
     }
-    return (index); 
+    return (target); 
 }
 
 int count_a_stack_rot(t_stack *stack, int pos, int *inverse, int *clockwise)
@@ -80,7 +80,7 @@ int count_b_stack_rot(t_stack *stack, int pos, int *clockwise, int *inverse)
         //find the index that above you want to add your value
         value_pos = find_value_pos(stack, find_target_value(stack, stack->a[pos]));
         ft_printf("find target value: %d\n", find_target_value(stack, stack->a[pos]));
-        ft_printf("this is number that i want to be on top on B stack: %d\n", value_pos);
+        ft_printf("this is number that i want to be on top on B stack: %d\n", stack->b[value_pos]);
         //calculate how many rots that requires
         if ((value_pos + 1) <= ((stack->b_size + 2 - 1)/2))
         {
@@ -99,6 +99,7 @@ int count_b_stack_rot(t_stack *stack, int pos, int *clockwise, int *inverse)
     {
         //find pos of max
         value_pos = find_value_pos(stack, max);
+        ft_printf("this is number that i want to be on top on B stack: %d\n", stack->b[value_pos]);
         //calculate how many rots for that to top
         if ((value_pos + 1) <= ((stack->b_size + 2 - 1)/2))
         {

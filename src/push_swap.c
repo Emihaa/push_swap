@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 16:14:52 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/17 23:40:09 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/18 17:51:04 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,13 +47,13 @@ void take_action(t_stack *stack, int pos)
             while (rot_a != 0)
             {
                 if (rot_a > rot_b && inverse_a)
-                    reserve_rotate_a(stack);
-                if (rot_a <= rot_b && inverse_a && inverse_b)
-                    reserve_rotate_both(stack);
-                if (rot_a > rot_b && clockwise_a)
                     rotate_a(stack);
-                if (rot_a <= rot_b && clockwise_a && clockwise_b)
+                if (rot_a <= rot_b && inverse_a && inverse_b)
                     rotate_both(stack);
+                if (rot_a > rot_b && clockwise_a)
+                    reserve_rotate_a(stack);
+                if (rot_a <= rot_b && clockwise_a && clockwise_b)
+                    reserve_rotate_both(stack);
                 rot_a--;
             }
         }
@@ -62,13 +62,13 @@ void take_action(t_stack *stack, int pos)
             while (rot_b != 0)
             {
                 if (rot_b > rot_a && inverse_b)
-                    reserve_rotate_b(stack);
-                if (rot_b <= rot_a && inverse_a && inverse_b)
-                    reserve_rotate_both(stack);
-                if (rot_b > rot_a && clockwise_b)
                     rotate_b(stack);
-                if (rot_b <= rot_a && clockwise_a && clockwise_b)
+                if (rot_b <= rot_a && inverse_a && inverse_b)
                     rotate_both(stack);
+                if (rot_b > rot_a && clockwise_b)
+                    reserve_rotate_b(stack);
+                if (rot_b <= rot_a && clockwise_a && clockwise_b)
+                    reserve_rotate_both(stack);
                 rot_b--;
             }
         }
@@ -78,22 +78,22 @@ void take_action(t_stack *stack, int pos)
         ft_printf("no common rotation rotations\n");
         while (rot_b != 0 && clockwise_b)
         {
-            rotate_b(stack);
+            reserve_rotate_b(stack);
             rot_b--;
         }
         while (rot_b != 0 && inverse_b)
         {
-            reserve_rotate_b(stack);
+            rotate_b(stack);
             rot_b--;
         }
         while (rot_a != 0 && clockwise_a)
         {
-            rotate_a(stack);
+            reserve_rotate_a(stack);
             rot_a--;
         }
         while (rot_a != 0 && inverse_a)
         {
-            reserve_rotate_a(stack);
+            rotate_a(stack);
             rot_a--;
         }
     }
@@ -134,7 +134,7 @@ void calculate_cost(t_stack *stack)
         ft_printf("cost: %d\n", cost);
         cost = 0;
     }
-    ft_printf("\n---results: move value %d ---\n", stack->a[pos]);
+    ft_printf("\n-----results: move value %d -----\n", stack->a[pos]);
     take_action(stack, pos);
     compare_order(stack);
 }
@@ -142,15 +142,34 @@ void calculate_cost(t_stack *stack)
 //if i at start push 2 and in stack A there is less than 3 this segment faults
 void compare_order(t_stack *stack)
 {
+       //this just prints out stuff so i can see results     
+   int i = 0;
+    ft_printf("------------------------------------\n");
+   ft_printf("a stack: \n");
+   while (i < stack->a_size)
+   {
+        ft_printf("%d\n", stack->a[i]);
+        i++;
+   }
+    ft_printf("\n b stack: \n");
+   i = 0;
+    while (i < stack->b_size)
+   {
+        ft_printf("%d\n", stack->b[i]);
+        i++;
+   }
+ ft_printf("------------------------------------\n");
+
+////////////////////////////////////////////////////
+ 
     if (stack->a_size <= 3)
     {
         ft_printf("-- only 3 left --\n");
         if (check_order(stack))
             argc_three(stack);
-        //rotate A stack once to get highest value top
-        // reserve_rotate_a(stack);
-        //rotate B stack to get highest value to top
+        
         //then push everything from B to stack A
+        //rotate A stack so that the top value on B goes to the correct spot
         //then rotate A stack to get correct order
     }
     else
@@ -159,6 +178,25 @@ void compare_order(t_stack *stack)
 
 void do_something(t_stack *stack)
 {
+       //this just prints out stuff so i can see results     
+   int i = 0;
+   ft_printf("------------------------------------\n");
+   ft_printf("a stack: \n");
+   while (i < stack->a_size)
+   {
+        ft_printf("%d\n", stack->a[i]);
+        i++;
+   }
+    ft_printf("\n b stack: \n");
+   i = 0;
+    while (i < stack->b_size)
+   {
+        ft_printf("%d\n", stack->b[i]);
+        i++;
+   }
+    ft_printf("------------------------------------\n");
+
+ 
     if (stack->a_size == 2 && check_order(stack))
     {
         swap_a(stack);
@@ -181,7 +219,8 @@ void do_something(t_stack *stack)
 
     
    //this just prints out stuff so i can see results     
-   int i = 0;
+    i = 0;
+    ft_printf("------------------------------------\n");
    ft_printf("a stack: \n");
    while (i < stack->a_size)
    {
@@ -195,6 +234,7 @@ void do_something(t_stack *stack)
         ft_printf("%d\n", stack->b[i]);
         i++;
    }
+    ft_printf("------------------------------------\n");
 }
 
 void initialize_b(t_stack *stack)
