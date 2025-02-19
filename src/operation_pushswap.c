@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 14:02:02 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/12 14:47:27 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/19 21:43:02 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,7 @@ void push_to_a(t_stack *stack)
         stack->b_size--;
         stack->a_size++;
     }
-    ft_putendl_fd("pa", 2);
+    ft_putendl_fd("pa", 1);
 }
 
 //push from a to b, the first element of stack
@@ -67,7 +67,7 @@ void push_to_b(t_stack *stack)
         stack->a_size--;
         stack->b_size++;
     }
-    ft_putendl_fd("pb", 2);
+    ft_putendl_fd("pb", 1);
 }
 
 //swap both stacks same time
@@ -88,7 +88,7 @@ void swap_both(t_stack *stack)
         stack->a[0] = stack->a[1];
         stack->a[1] = temp;    
     }
-    ft_putendl_fd("ss", 2);
+    ft_putendl_fd("ss", 1);
 }
 
 // swap first 2 elements from stack b
@@ -103,7 +103,7 @@ void swap_b(t_stack *stack)
         stack->b[0] = stack->b[1];
         stack->b[1] = temp;    
     }
-    ft_putendl_fd("sb", 2);
+    ft_putendl_fd("sb", 1);
 }
 // swap first 2 elements from stack a
 void swap_a(t_stack *stack)
@@ -117,5 +117,5 @@ void swap_a(t_stack *stack)
         stack->a[0] = stack->a[1];
         stack->a[1] = temp;    
     }
-    ft_putendl_fd("sa", 2);
+    ft_putendl_fd("sa", 1);
 }

@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/12 14:45:21 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/12 14:52:12 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/19 21:43:28 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -44,7 +44,7 @@ void reserve_rotate_both(t_stack *stack)
         }
         stack->b[0] = temp;
     }
-    ft_putendl_fd("rrr", 2);
+    ft_putendl_fd("rrr", 1);
 }
 
 //shift all elements of the stack down one position on
@@ -65,7 +65,7 @@ void reserve_rotate_b(t_stack *stack)
         }
         stack->b[0] = temp;
     }
-    ft_putendl_fd("rrb", 2);
+    ft_putendl_fd("rrb", 1);
 }
 
 
@@ -87,7 +87,7 @@ void reserve_rotate_a(t_stack *stack)
         }
         stack->a[0] = temp;
     }
-    ft_putendl_fd("rra", 2);
+    ft_putendl_fd("rra", 1);
 }
 
 //do rotate_a && rotate_b same tme
@@ -117,7 +117,7 @@ void rotate_both(t_stack *stack)
         }
         stack->b[stack->b_size - 1] = temp;
     }
-    ft_putendl_fd("rr", 2);
+    ft_putendl_fd("rr", 1);
 }
 
 //shift all the elements of the stack b one position upwards.
@@ -138,7 +138,7 @@ void rotate_b(t_stack *stack)
         }
         stack->b[stack->b_size - 1] = temp;
     }
-    ft_putendl_fd("rb", 2);
+    ft_putendl_fd("rb", 1);
 }
 
 //shift all the elements of the stack a one position upwards.
@@ -159,5 +159,5 @@ void rotate_a(t_stack *stack)
         }
         stack->a[stack->a_size - 1] = temp;
     }
-    ft_putendl_fd("ra", 2);
+    ft_putendl_fd("ra", 1);
 }

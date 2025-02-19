@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 16:14:52 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/18 17:51:04 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/19 17:32:20 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,87 +20,6 @@ void error_input()
     exit(EXIT_FAILURE);
 }
 
-void take_action(t_stack *stack, int pos)
-{
-    int inverse_a;
-    int clockwise_a;
-    int inverse_b;
-    int clockwise_b;
-    int rot_a;
-    int rot_b;
-
-    inverse_a = 0;
-    clockwise_a = 0;
-    inverse_b = 0;
-    clockwise_b = 0;
-    //pos gives the position of value to take action on
-    //calculate how many rots we have to do on A stack
-    //then to B stack
-    //check if we can do double rr
-    rot_a = count_a_stack_rot(stack, pos, &inverse_a, &clockwise_a);  
-    rot_b = count_b_stack_rot(stack, pos, &clockwise_b, &inverse_b);
-    if ((clockwise_a && clockwise_b) || (inverse_a && inverse_b)) //common rotations
-    {
-        ft_printf("common rotations\n");
-        if (rot_a >= rot_b)
-        {
-            while (rot_a != 0)
-            {
-                if (rot_a > rot_b && inverse_a)
-                    rotate_a(stack);
-                if (rot_a <= rot_b && inverse_a && inverse_b)
-                    rotate_both(stack);
-                if (rot_a > rot_b && clockwise_a)
-                    reserve_rotate_a(stack);
-                if (rot_a <= rot_b && clockwise_a && clockwise_b)
-                    reserve_rotate_both(stack);
-                rot_a--;
-            }
-        }
-        else if (rot_b > rot_a) //esim. 3 > 2, so 2
-        {
-            while (rot_b != 0)
-            {
-                if (rot_b > rot_a && inverse_b)
-                    rotate_b(stack);
-                if (rot_b <= rot_a && inverse_a && inverse_b)
-                    rotate_both(stack);
-                if (rot_b > rot_a && clockwise_b)
-                    reserve_rotate_b(stack);
-                if (rot_b <= rot_a && clockwise_a && clockwise_b)
-                    reserve_rotate_both(stack);
-                rot_b--;
-            }
-        }
-    }
-    else //no common rotations
-    {
-        ft_printf("no common rotation rotations\n");
-        while (rot_b != 0 && clockwise_b)
-        {
-            reserve_rotate_b(stack);
-            rot_b--;
-        }
-        while (rot_b != 0 && inverse_b)
-        {
-            rotate_b(stack);
-            rot_b--;
-        }
-        while (rot_a != 0 && clockwise_a)
-        {
-            reserve_rotate_a(stack);
-            rot_a--;
-        }
-        while (rot_a != 0 && inverse_a)
-        {
-            rotate_a(stack);
-            rot_a--;
-        }
-    }
-    //then push the number
-    push_to_b(stack);
-    //then DO actions
-}
 
 //if the cost is 1 just do that without calculating the rest
 void calculate_cost(t_stack *stack)
@@ -167,10 +86,7 @@ void compare_order(t_stack *stack)
         ft_printf("-- only 3 left --\n");
         if (check_order(stack))
             argc_three(stack);
-        
-        //then push everything from B to stack A
-        //rotate A stack so that the top value on B goes to the correct spot
-        //then rotate A stack to get correct order
+        return_values(stack);
     }
     else
         calculate_cost(stack);
@@ -247,6 +163,10 @@ void initialize_b(t_stack *stack)
         error_input();
     }
     stack->b_size = 0;
+    stack->inverse_a = 0;
+    stack->inverse_b = 0;
+    stack->clockwise_a = 0;
+    stack->clockwise_b = 0;
 }
 
 int main(int argc, char *argv[])

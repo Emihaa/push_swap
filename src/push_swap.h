@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 16:14:49 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/17 21:55:36 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/19 17:30:55 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,6 +26,10 @@ typedef struct s_stack
     int top;
     int a_size;
     int b_size;
+    int inverse_a;
+    int clockwise_a;
+    int inverse_b;
+    int clockwise_b;
     int flag;
 } t_stack;
 
@@ -64,5 +68,11 @@ int find_target_value(t_stack *stack, int value);
 int count_a_stack_rot(t_stack *stack, int pos, int *inverse, int *clockwise);
 int count_b_stack_rot(t_stack *stack, int pos, int *clockwise, int *inverse);
 int rot_cost(t_stack *stack, int pos);
+
+//take_action.c
+void take_action(t_stack *stack, int pos);
+
+//return_values.c
+void return_values(t_stack *stack);
 
 #endif
