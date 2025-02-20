@@ -6,12 +6,15 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/19 15:14:15 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/19 17:26:13 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:52:32 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
+
+//rotate B stack based on gotten values.
+//This is only when we need to rotate both stacks the same time, same direction
 static void common_rotations_b(t_stack *stack, int rot_a, int rot_b)
 {
     while (rot_b != 0)
@@ -28,9 +31,10 @@ static void common_rotations_b(t_stack *stack, int rot_a, int rot_b)
     }    
 }
 
+//rotate A stack based on gotten values.
+//This is only when we need to rotate both stacks the same time, same direction
 static void common_rotations_a(t_stack *stack, int rot_a, int rot_b)
 {
-    ft_printf("common rotations\n");
     if (rot_a >= rot_b)
     {
         while (rot_a != 0)
@@ -46,13 +50,13 @@ static void common_rotations_a(t_stack *stack, int rot_a, int rot_b)
             rot_a--;
         }
     }
-    else if (rot_b > rot_a) //esim. 3 > 2, so 2
+    else if (rot_b > rot_a)
         common_rotations_b(stack, rot_a, rot_b);
 }
 
+//No double rotations so only invidual rotations
 static void no_common_rotations(t_stack *stack, int rot_a, int rot_b)
 {
-    ft_printf("no common rotation rotations\n");
     while (rot_b != 0 && stack->clockwise_b)
     {
         reserve_rotate_b(stack);
@@ -86,9 +90,9 @@ void take_action(t_stack *stack, int pos)
 
     rot_a = count_a_stack_rot(stack, pos, &stack->inverse_a, &stack->clockwise_a);  
     rot_b = count_b_stack_rot(stack, pos, &stack->clockwise_b, &stack->inverse_b);
-    if ((stack->clockwise_a && stack->clockwise_b) || (stack->inverse_a && stack->inverse_b)) //common rotations
+    if ((stack->clockwise_a && stack->clockwise_b) || (stack->inverse_a && stack->inverse_b))
         common_rotations_a(stack, rot_a, rot_b);
-    else //no common rotations
+    else
         no_common_rotations(stack, rot_a, rot_b);
     stack->inverse_a = 0;
     stack->inverse_b = 0;

@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/11 20:23:34 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/11 20:25:06 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:54:04 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -40,6 +40,8 @@ void argc_three(t_stack *stack)
     }
 }
 
+
+//check if the order of stack is correct from min to max
 int check_order(t_stack *stack)
 {
     int i;
@@ -53,6 +55,9 @@ int check_order(t_stack *stack)
     return (0);
 }
 
+//find min and max on B stack
+//flag = 1 is for max value
+//flag = 0 is for min value
 int maxmin_b(t_stack *stack, int flag)
 {
     int i;
@@ -60,7 +65,7 @@ int maxmin_b(t_stack *stack, int flag)
 
     i = 0;
     temp = stack->b[i];
-    if (flag) // find max
+    if (flag)
     {
         while (++i < stack->b_size)
         {
@@ -68,7 +73,7 @@ int maxmin_b(t_stack *stack, int flag)
                 temp = stack->b[i];
         }
     }
-    else // find min
+    else
     {
         while (++i < stack->b_size)
         {
@@ -79,6 +84,9 @@ int maxmin_b(t_stack *stack, int flag)
     return(temp);
 }
 
+//find min and max on A stack
+//flag = 1 is for max value
+//flag = 0 is for min value
 int maxmin_a(t_stack *stack, int flag)
 {
     int i;
@@ -86,7 +94,7 @@ int maxmin_a(t_stack *stack, int flag)
 
     i = 0;
     temp = stack->a[i];
-    if (flag) // find max
+    if (flag)
     {
         while (++i < stack->a_size)
         {
@@ -94,7 +102,7 @@ int maxmin_a(t_stack *stack, int flag)
                 temp = stack->a[i];
         }
     }
-    else // find min
+    else
     {
         while (++i < stack->a_size)
         {

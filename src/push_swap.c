@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 16:14:52 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/19 17:32:20 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/20 17:42:11 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,7 @@
 
 void compare_order(t_stack *stack);
 
+//Errir input
 void error_input()
 {
     ft_putendl_fd("Error", 2);
@@ -21,7 +22,7 @@ void error_input()
 }
 
 
-//if the cost is 1 just do that without calculating the rest
+//calculate what value in A stack is cheapest to move to B stack
 void calculate_cost(t_stack *stack)
 {
     int cost;
@@ -31,11 +32,10 @@ void calculate_cost(t_stack *stack)
 
     i = 0;
     compare = 0;
-    while (i < stack->a_size)//if there are like 100 values, it doesnt make sense to go through all
-    {//at what point do i stop going down the list?
+    while (i < stack->a_size)
+    {
         cost = rot_cost(stack, i);
-        cost++; //plus cost++ for push_to b stack
-        //then compare with the previous cost which one cost less and remember that
+        cost++;
         if (compare == 0)
         {
             compare = cost;
@@ -50,40 +50,18 @@ void calculate_cost(t_stack *stack)
             }
         }
         i++;
-        ft_printf("cost: %d\n", cost);
         cost = 0;
     }
-    ft_printf("\n-----results: move value %d -----\n", stack->a[pos]);
     take_action(stack, pos);
     compare_order(stack);
 }
 
-//if i at start push 2 and in stack A there is less than 3 this segment faults
+//compare if in a stack there is 3 or less left and start building it back together to A stack
+//otherwise calculate_cost again
 void compare_order(t_stack *stack)
 {
-       //this just prints out stuff so i can see results     
-   int i = 0;
-    ft_printf("------------------------------------\n");
-   ft_printf("a stack: \n");
-   while (i < stack->a_size)
-   {
-        ft_printf("%d\n", stack->a[i]);
-        i++;
-   }
-    ft_printf("\n b stack: \n");
-   i = 0;
-    while (i < stack->b_size)
-   {
-        ft_printf("%d\n", stack->b[i]);
-        i++;
-   }
- ft_printf("------------------------------------\n");
-
-////////////////////////////////////////////////////
- 
     if (stack->a_size <= 3)
     {
-        ft_printf("-- only 3 left --\n");
         if (check_order(stack))
             argc_three(stack);
         return_values(stack);
@@ -92,27 +70,11 @@ void compare_order(t_stack *stack)
         calculate_cost(stack);
 }
 
+//The start: If there is 2 or 3 numbers
+//hard suffle them manually, if more than 3 push 2 top values from A to B stack
+//and then calculate_cost to move next value to B
 void do_something(t_stack *stack)
 {
-       //this just prints out stuff so i can see results     
-   int i = 0;
-   ft_printf("------------------------------------\n");
-   ft_printf("a stack: \n");
-   while (i < stack->a_size)
-   {
-        ft_printf("%d\n", stack->a[i]);
-        i++;
-   }
-    ft_printf("\n b stack: \n");
-   i = 0;
-    while (i < stack->b_size)
-   {
-        ft_printf("%d\n", stack->b[i]);
-        i++;
-   }
-    ft_printf("------------------------------------\n");
-
- 
     if (stack->a_size == 2 && check_order(stack))
     {
         swap_a(stack);
@@ -121,38 +83,18 @@ void do_something(t_stack *stack)
     else if (stack->a_size == 3 && check_order(stack))
         argc_three(stack);
     else if(stack->a_size > 3 && check_order(stack))
-    { //this maybe has to be recursive till we get else
+    {
         if (stack->b_size < 2)
         {
             push_to_b(stack);
             push_to_b(stack);
         }
         calculate_cost(stack);
-        //compare if correct order, if not calculate more cost
-        //if A stack has only 3 left, do argc_three
-        //and then start pushing stuff from B stack to A stack
     }
-
-    
-   //this just prints out stuff so i can see results     
-    i = 0;
-    ft_printf("------------------------------------\n");
-   ft_printf("a stack: \n");
-   while (i < stack->a_size)
-   {
-        ft_printf("%d\n", stack->a[i]);
-        i++;
-   }
-    ft_printf("\n b stack: \n");
-   i = 0;
-    while (i < stack->b_size)
-   {
-        ft_printf("%d\n", stack->b[i]);
-        i++;
-   }
-    ft_printf("------------------------------------\n");
 }
 
+
+//initialize necessary stuff
 void initialize_b(t_stack *stack)
 {
     stack->b = malloc(stack->a_size * sizeof(int));
