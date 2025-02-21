@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/05 16:14:52 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/20 17:42:11 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/21 17:05:29 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,27 +32,30 @@ void calculate_cost(t_stack *stack)
 
     i = 0;
     compare = 0;
-    while (i < stack->a_size)
+    if (stack->a_size > 3)
     {
-        cost = rot_cost(stack, i);
-        cost++;
-        if (compare == 0)
+        while (i < stack->a_size)
         {
-            compare = cost;
-            pos = i;
-        }
-        else
-        {
-            if (compare > cost)
+            cost = rot_cost(stack, i);
+            cost++;
+            if (compare == 0)
             {
                 compare = cost;
                 pos = i;
             }
+            else
+            {
+                if (compare > cost)
+                {
+                    compare = cost;
+                    pos = i;
+                }
+            }
+            i++;
+            cost = 0;
         }
-        i++;
-        cost = 0;
+        take_action(stack, pos);
     }
-    take_action(stack, pos);
     compare_order(stack);
 }
 
@@ -89,6 +92,9 @@ void do_something(t_stack *stack)
             push_to_b(stack);
             push_to_b(stack);
         }
+        //if after pushing stuff to b, we are left with 3 on A stack. We want to check if it is left with 3 values,
+        //dont calculate cost, but do argc_three and then start pushing values from B stack to A stack
+        //so skip the calculate_cost action from A to B
         calculate_cost(stack);
     }
 }

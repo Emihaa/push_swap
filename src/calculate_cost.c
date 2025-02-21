@@ -6,7 +6,7 @@
 /*   By: ehaanpaa <ehaanpaa@student.hive.fi>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2025/02/17 21:52:04 by ehaanpaa          #+#    #+#             */
-/*   Updated: 2025/02/20 17:46:41 by ehaanpaa         ###   ########.fr       */
+/*   Updated: 2025/02/21 15:30:12 by ehaanpaa         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int find_target_value(t_stack *stack, int value)
     int target;
 
     i = 0;
-    target = -2147483647;
+    target = -2147483648;
     while (i < stack->b_size)
     {
         if (stack->b[i] < value && stack->b[i] > target)
